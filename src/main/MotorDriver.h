@@ -1,15 +1,22 @@
 #pragma once
 #include <cstdint>
+
 class Motor {
     public:
     Motor() = default;
     ~Motor() = default;
-    float getSpeed() const;
+    bool speedThreshold();  //Check minimum speed to set speed
+    private:
+    float getSpeed();       //Calculate motor speed
+    void setSpeed();        //Set motor speed
 };
 
-class Wheel {
+class Steer {
     public:
-    Wheel() = default;
-    ~Wheel() = default;
-    float getRotation() const;
+    Steer() = default;
+    ~Steer() = default;
+    bool angleThreshold();  //Check minimum angle to set steering
+    private:
+    float getRotation();    //Calculate steering angle
+    void setRotation();     //Set steering angle
 };
