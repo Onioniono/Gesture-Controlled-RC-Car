@@ -1,18 +1,27 @@
 #pragma once
 #include <cstdint>
-struct sensorData {
+struct SensorData {
     /* Accelerometer Data */
-    std::int16_t accelX;
-    std::int16_t accelY;
-    std::int16_t accelZ;
+    std::int16_t accelX, accelY, accelZ;
     /* Gyroscope Data */
-    std::int16_t gyroX;
-    std::int16_t gyroY;
-    std::int16_t gyroZ;
+    std::int16_t gyroX, gyroY, gyroZ;
     /* Magnetometer Data */
-    std::int16_t magX;
-    std::int16_t magY;
-    std::int16_t magZ;
+    std::int16_t magX, magY, magZ;
     /* Temperature Data */
-    std::int16_t temp;
+    std::int16_t temperature;
+};
+
+class MPU9250Sensor {
+   public:
+    MPU9250Sensor() = default;
+    ~MPU9250Sensor() = default;
+
+    bool init();
+    bool readSensorData(SensorData& data);
+
+   private:
+    bool readAccelerometer(std::int16_t& x, std::int16_t& y, std::int16_t& z);
+    bool readGyroscope(std::int16_t& x, std::int16_t& y, std::int16_t& z);
+    bool readMagnetometer(std::int16_t& x, std::int16_t& y, std::int16_t& z);
+    bool readTemperature(std::int16_t& temperature);
 };
