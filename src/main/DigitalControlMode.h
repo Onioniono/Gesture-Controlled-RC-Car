@@ -4,5 +4,6 @@ class DigitalMode {
     public:
     DigitalMode() = default;
     ~DigitalMode() = default;
-    bool cooldown();        //Cooldown period between gesture detections
+    bool directionalTrigger();  //Detect directional gesture and return false 
+                                //if direction is invert of current direction
 };
