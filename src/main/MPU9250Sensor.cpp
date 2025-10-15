@@ -1,8 +1,17 @@
 #pragma once
 #include "MPU9250Sensor.h"
+#include <SPI.h>
 
 bool MPU9250Sensor::init() {
-    // Initialize communication interface (SPI)
+    pinMode(CS, OUTPUT); //Chip Select Pin
+    //Start SPI library
+    SPI.begin();
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+    //Set Control Registers
+    digitalWrite(CS, LOW);  //Start communication
+
+    digitalWrite(CS, HIGH); //End communication
     return true;
 }
 
