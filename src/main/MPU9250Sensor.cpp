@@ -66,7 +66,13 @@ bool MPU9250Sensor::readMagnetometer(std::int16_t& x, std::int16_t& y, std::int1
 
 bool MPU9250Sensor::readTemperature(std::int16_t& t) {
     // Read raw temperature data
-
+    SPI.beginTransaction(settings);
+    digitalWrite(CS,LOW);
+    SPI.transfer(TEMP_OUT_H | 0x80);
+    byte rawData[2];
+    SPI.transferBytes(NULL, rawData, 2);
+    digitalWrite(CS,HIGH);
+    SPI.endTransaction();
     // Store raw data
     t = (std::int16_t)(rawData[0] << 8 | rawData[1]);
     return true;
