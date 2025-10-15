@@ -21,8 +21,14 @@ class MPU9250Sensor {
     bool readRawData(RawData& data);      //Read all sensor data into struct
 
    private:
+    SPISettings settings(1000000, MSBFIRST, SPI_MODE0); //1MHz, MSB first, Mode 0
+
     bool readAccelerometer(std::int16_t& x, std::int16_t& y, std::int16_t& z);      //read raw accelerometer data
     bool readGyroscope(std::int16_t& x, std::int16_t& y, std::int16_t& z);          //read raw gyroscope data
     bool readMagnetometer(std::int16_t& x, std::int16_t& y, std::int16_t& z);       //read raw magnetometer data
     bool readTemperature(std::int16_t& t);                                          //read raw temperature data
+    
+    bool AK8963Write(uint8_t reg, uint8_t data);                                    //write to AK8963 register to get magnetometer data
+    inline void writeRegister(uint8_t reg, uint8_t data);                           //write to MPU9250 register
+    inline uint8_t readRegister(uint8_t reg);                                       //read from MPU9250 register
 };

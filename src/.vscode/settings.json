@@ -64,6 +64,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp"
     }
 }
