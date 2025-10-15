@@ -3,15 +3,13 @@
 #include <SPI.h>
 
 bool MPU9250Sensor::init() {
-    pinMode(CS, OUTPUT); //Chip Select Pin
+    pinMode(CS, OUTPUT);     //Chip Select Pin
+    digitalWrite(CS, HIGH);  // Ensure device is deselected initially
     //Start SPI library
     SPI.begin();
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setDataMode(SPI_MODE0);
-    //Set Control Registers
-    digitalWrite(CS, LOW);  //Start communication
-
-    digitalWrite(CS, HIGH); //End communication
+    SPISettings settings(1000000, MSBFIRST, SPI_MODE0); //1MHz, MSB first, Mode 0
+    SPI.beginTransaction(settings);
+    SPI.endTransaction();
     return true;
 }
 
@@ -26,24 +24,50 @@ bool MPU9250Sensor::readRawData(RawData& data) {
 
 bool MPU9250Sensor::readAccelerometer(std::int16_t& x, std::int16_t& y, std::int16_t& z) {
     // Read raw accelerometer data
-    x = 0; y = 0; z = 0; // Placeholder values
+    SPI.beginTransaction(settings);
+    digitalWrite(CS,LOW);
+    SPI.transfer(ACCEL_XOUT_H | 0x80);
+    byte rawData[6];
+    SPI.transferBytes(NULL, rawData, 6);
+    digitalWrite(CS,HIGH);
+    SPI.endTransaction();
+    // Store raw data
+    x = (std::int16_t)(rawData[0] << 8 | rawData[1]);
+    y = (std::int16_t)(rawData[2] << 8 | rawData[3]);
+    z = (std::int16_t)(rawData[4] << 8 | rawData[5]);
     return true;
 }
 
 bool MPU9250Sensor::readGyroscope(std::int16_t& x, std::int16_t& y, std::int16_t& z) {
     // Read raw gyroscope data
-    x = 0; y = 0; z = 0; // Placeholder values
+    SPI.beginTransaction(settings);
+    digitalWrite(CS,LOW);
+    SPI.transfer(GYRO_XOUT_H | 0x80);
+    byte rawData[6];
+    SPI.transferBytes(NULL, rawData, 6);
+    digitalWrite(CS,HIGH);
+    SPI.endTransaction();
+    // Store raw data
+    x = (std::int16_t)(rawData[0] << 8 | rawData[1]);
+    y = (std::int16_t)(rawData[2] << 8 | rawData[3]);
+    z = (std::int16_t)(rawData[4] << 8 | rawData[5]);
     return true;
 }
 
 bool MPU9250Sensor::readMagnetometer(std::int16_t& x, std::int16_t& y, std::int16_t& z) {
     // Read raw magnetometer data
-    x = 0; y = 0; z = 0; // Placeholder values
+
+    // Store raw data
+    x = (std::int16_t)(rawData[0] << 8 | rawData[1]);
+    y = (std::int16_t)(rawData[2] << 8 | rawData[3]);
+    z = (std::int16_t)(rawData[4] << 8 | rawData[5]);
     return true;
 }
 
 bool MPU9250Sensor::readTemperature(std::int16_t& t) {
     // Read raw temperature data
-    t = 0; // Placeholder value
+
+    // Store raw data
+    t = (std::int16_t)(rawData[0] << 8 | rawData[1]);
     return true;
 }
